@@ -5,7 +5,9 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, startTransition } from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -19,11 +21,20 @@ import {
 
 import {
   Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
+//  DebugInstructions,
+//  Header,
+//  LearnMoreLinks,
+//  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import  Parse  from 'parse/react-native';
+import GetGameScore from './components/GetGameScore';
+import Header from './components/Header'
+
+/*
+ <!--ReloadInstructions /-->
+             <GetGameScore />
+*/
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -55,14 +66,55 @@ function Section({children, title}: SectionProps): React.JSX.Element {
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+/*const fetchDataFromParse = async () => {
+  console.log("create GameScore ParseQuery");
+  const parseQuery = new Parse.Query("GameScore");
+  // Fetch the object by its objectId
+  console.log("create GameScore ParseQuery");
+  const parseObject = await parseQuery.get("vmzWOqaRGQ");
 
+
+  // Access the object's properties
+  console.log("access object properties");
+  const playerName = parseObject.get('playerName');
+  const score = parseObject.get('score');
+
+  console.log('Fetched object:', { playerName, score});  
+}*/
+
+function App(): React.JSX.Element {
+
+  const isDarkMode = useColorScheme() === 'dark';
+  console.log("Beginning of App");
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  return (
+  // Initialize Parse
+//  console.log("set Async Storage");
+//  Parse.setAsyncStorage(AsyncStorage); // AsyncStorage is used for storing session tokens
+//  console.log("Initialize Parse");
+//  Parse.initialize('APPLICATION_ID');
+//  console.log("set Server Url");
+//  Parse.serverURL = 'http://localhost:1338/parse';
+
+//useEffect(() => {
+    // Initialize Parse
+//    console.log("CDD NEW");
+//    console.log("set Async Storage");
+//    Parse.setAsyncStorage(AsyncStorage); // AsyncStorage is used for storing session tokens
+//    console.log("Initialize Parse");
+//    Parse.initialize('APPLICATION_ID');
+//    console.log("set Server Url");
+//    Parse.serverURL = 'http://localhost:1338/parse';
+//  }, []);
+
+/*  startTransition(() => {
+    setCount(count + 1);
+    fetchDataFromParse();
+  });*/
+
+/*  return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
@@ -82,6 +134,7 @@ function App(): React.JSX.Element {
           </Section>
           <Section title="See Your Changes">
             <ReloadInstructions />
+            <GetGameScore />
           </Section>
           <Section title="Debug">
             <DebugInstructions />
@@ -93,7 +146,26 @@ function App(): React.JSX.Element {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+  );*/
+
+  return (
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <Header title="Walking History"/>
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Section title="Walk around, discover history!">
+            <GetGameScore />
+          </Section>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );  
 }
 
 const styles = StyleSheet.create({
