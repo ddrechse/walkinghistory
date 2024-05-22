@@ -3,25 +3,29 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import { Text, PermissionsAndroid, Platform, Image, View } from "react-native";
+import { Text, PermissionsAndroid, Platform, Image, View, StyleSheet } from "react-native";
 import Geolocation from 'react-native-geolocation-service';
-//import { getDistance } from 'geolib';
-
+import { getDistance } from 'geolib';
 import Parse from 'parse/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Location = props => {
+const styles = StyleSheet.create({
+    container: {
+      paddingTop: 50,
+    },
+    columnContainer: {
+      flexDirection: 'column',
+    },
+  });
 
-//    const [loc, setLoc] = useState();
-    const [loc, setLoc] = useState<string | undefined>(undefined);
-//    const [closest, setClosest] = useState();
-    const [closest, setClosest] = useState<string | undefined>(undefined);
-//    const [distance, setDistance] = useState();
-    const [distance, setDistance] = useState<number | undefined>(undefined);
-//    const [watching, setWatching] = useState(false);
-    const [watching, setWatching] = useState<boolean | undefined>(undefined);
 
-    const Parse = require('parse/react-native.js');
+const Location : React.FC = () => {
+
+
+    const [loc, setLoc] = useState<String>();
+    const [closest, setClosest] = useState<Parse.Object>();
+    const [distance, setDistance] = useState<number>();
+    const [watching, setWatching] = useState<boolean>(false);
 
     // This function asks for location permission on iOS and Android
     const requestLocationPermissions = async () => {
@@ -68,9 +72,7 @@ const Location = props => {
                     let query = new Parse.Query('POI');
                     query.near('location', new Parse.GeoPoint(currentPosition.coords.latitude,
                         currentPosition.coords.longitude));
-                    let results = await query.find().catch(err => console.log("OOPS " + JSON.stringify(err)));
-                    console.log(results);
-                    console.log(results.length);
+                    let results:any = await query.find().catch((err: any) => console.log("OOPS " + JSON.stringify(err)));
                     if (results.length > 0) {
                         // loop through results
                         let closest = 0;
@@ -102,7 +104,7 @@ const Location = props => {
                 error => {
                     console.log(error);
                 },
-                { enableHighAccuracy: true, timeout: 15000, maximumAge: 10 }
+                { enableHighAccuracy: true, /*timeout: 15000, maximumAge: 10*/ }
             );
             setWatching(true);
             console.log("after location call")
@@ -120,16 +122,20 @@ const Location = props => {
 
     useEffect(() => {
         console.log("MARK: in location.useEffect");
+        Parse.setAsyncStorage(AsyncStorage); // AsyncStorage is used for storing session tokens
+        Parse.initialize('APPLICATION_ID');
+        Parse.serverURL = 'http://localhost:1338/parse';
         getLocation();
     });
+
 
     return (
         <View>
             <Text>Your location is {loc === null || loc === undefined ? "unknown" : loc} &nbsp;</Text>
             {closest === null || closest === undefined 
                 ? <Text>No attraction within 2km</Text>
-                : <View style={{flexDirection:'column', container: { paddingTop: 50 }}}>
-                    <Text style={{flex: 1, flexWrap: 'wrap', flexShrink: 1}}>{"\nClosest attraction (within 2km) is:\n" + closest.get("name") + " at (" 
+                : <View style={[styles.columnContainer, styles.container]}>
+                    <Text>{"\nClosest attraction (within 2km) is:\n" + closest.get("name") + " at (" 
                     + closest.get("location").latitude + ',' 
                     + closest.get("location").longitude + ") \nabout "
                     + distance + " metres away."}</Text>
@@ -144,6 +150,7 @@ const Location = props => {
                         }} 
                     />
                 </View>
+
             }
         </View>
     )

@@ -30,6 +30,7 @@ import {
 import  Parse  from 'parse/react-native';
 import GetGameScore from './components/GetGameScore';
 import Header from './components/Header'
+import Location from './components/Location';
 
 /*
  <!--ReloadInstructions /-->
@@ -160,7 +161,7 @@ function App(): React.JSX.Element {
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
           <Section title="Walk around, discover history!">
-            <GetGameScore />
+            <Location />
           </Section>
         </View>
       </ScrollView>
