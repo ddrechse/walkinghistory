@@ -78,7 +78,7 @@ npx react-native run-ios
 ![Walking History Mobile App](./walkinghistory.png)
 
 
-You've successfully run and modified your React Native App. :partying_face:
+You've successfully run your React Native Walking History App. :partying_face:
 
 
 
