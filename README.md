@@ -44,20 +44,7 @@ Update useEffect method in Location.tsx to point at the local stack
         Parse.initialize('APPLICATION_ID');
         Parse.serverURL = 'http://localhost:1338/parse';
 ```
-Fix an issue in react-native ParseLiveQuery.js
 
-```bash
-vi ./node_modules/parse/lib/react-native/ParseLiveQuery.js
-# and comment out the following line
-var LiveQuery = function () {
-  function LiveQuery() {
-    (0, _classCallCheck2.default)(this, LiveQuery);
-    var EventEmitter = _CoreManager.default.getEventEmitter();
-    this.emitter = new EventEmitter();
-    this.on = this.emitter.on;
-    this.emit = this.emitter.emit;
-//    this.on('error', function () {});
-```
 ## Step 4: Run the App
 
 Set the IPhone Simulator location to Penn Station New York City
