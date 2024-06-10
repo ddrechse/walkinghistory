@@ -5,7 +5,7 @@ node <<EOF
     const Parse = require('parse/node');
 
     Parse.initialize("APPLICATION_ID");
-    Parse.serverURL = 'http://localhost:1338/parse              ';
+    Parse.serverURL = 'http://localhost:1338/parse';
 
     async function loadPOI(name, location, image, audio) {
         let POI = new Parse.Object("POI");
